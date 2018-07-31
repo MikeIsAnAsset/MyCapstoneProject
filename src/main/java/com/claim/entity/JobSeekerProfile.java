@@ -1,6 +1,7 @@
 package com.claim.entity;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,12 +20,39 @@ public class JobSeekerProfile implements Serializable {
 	private int jobSeekerId;
 	
 	@Column
-	private String city;
+	private String location;
 	
 	@Column 
 	private String state;
 	
-	@Transient
+	@Column
+	private String headline;
+	
+	@Column
+	private int industry;
+	
+	@Column
+	private int numLinkedInConnections;
+	
+	@Column
+	private String summary;
+	
+	@Column
+	private String specialities;
+	
+	@Column
+	private LinkedList<Position> positions;
+	
+	@Column
+	private String formattedLinkedInPictureURL;
+	
+	@Column
+	private String unformattedLinkedInPictureURL;
+	
+	@Column
+	private String publicLinkedInProfile;
+	
+	@Column
 	private Skills skills;
 	
 	@Column
@@ -46,12 +74,12 @@ public class JobSeekerProfile implements Serializable {
 	}
 
 
-	public String getCity() {
-		return city;
+	public String getLocation() {
+		return location;
 	}
 
 	public void setCity(String city) {
-		this.city = city;
+		this.location = location;
 	}
 
 	public String getState() {

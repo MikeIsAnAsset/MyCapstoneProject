@@ -1,6 +1,7 @@
 package com.claim.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,11 @@ public class UserController {
 //	
 //	}
 	
+	
+	public void addTestUser() {
+		User testUser = new User("Mano", "ManualTest");
+	}
+	
 	@RequestMapping(value="/join", 
 			consumes=MediaType.APPLICATION_JSON_VALUE,
 			produces=MediaType.APPLICATION_JSON_VALUE,
@@ -47,8 +53,11 @@ public class UserController {
 	public ResponseEntity<User> join(@RequestBody User user){
 		System.out.println(user);
 		userService.saveUser(user);
-		return null;
 		
+		User userReturned = userService.loginUser(user.getEmail(), user.getPassword());
+		System.out.println("user returned: "+userReturned);
+		return new ResponseEntity<>(userReturned, HttpStatus.OK);
+	
 	}
 	
 }

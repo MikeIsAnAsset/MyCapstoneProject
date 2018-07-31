@@ -1,12 +1,19 @@
 package com.claim.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.TreeSet;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
@@ -17,6 +24,9 @@ public class Job implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int jobId;
 	
+	@Column(name="Company_profile")
+	private CompanyProfile companyProfile;
+
 	@Column
 	private String typeOfRole;
 	
@@ -27,9 +37,9 @@ public class Job implements Serializable {
 	private String description;
 	
 	@Column
-	private String employementType;
+	private String employmentType;
 	
-	@Transient
+	@Column
 	private Skills skills;
 	
 	@Column
@@ -43,7 +53,36 @@ public class Job implements Serializable {
 	
 	@Column
 	private String equity;
+	
+	private static ArrayList<Job> jobs = new ArrayList<>();
 
+	public Job(Skills skills) {
+		super();
+		this.skills = skills;
+	}
+
+	
+	
+	public Job(String typeOfRole, String jobLevel, String description, String employmentType, Skills skills,
+			String requiredExperience, Long compensation, String compensationDescription, String equity) {
+		super();
+		this.typeOfRole = typeOfRole;
+		this.jobLevel = jobLevel;
+		this.description = description;
+		this.employmentType = employmentType;
+		this.skills = skills;
+		this.requiredExperience = requiredExperience;
+		this.compensation = compensation;
+		this.compensationDescription = compensationDescription;
+		this.equity = equity;
+	}
+
+
+
+	public static void addToJobs(Job job) {
+		jobs.add(job);
+	}
+	
 	public int getJobId() {
 		return jobId;
 	}
@@ -52,8 +91,12 @@ public class Job implements Serializable {
 		this.jobId = jobId;
 	}
 
+	@ManyToOne
+	@JoinColumn(name="Company_profile_id")
+	public CompanyProfile getCompanyProfile() {
+		return companyProfile;
+	}
 	
-
 	public String getTypeOfRole() {
 		return typeOfRole;
 	}
@@ -79,17 +122,36 @@ public class Job implements Serializable {
 	}
 
 	public String getEmployementType() {
-		return employementType;
+		return employmentType;
 	}
 
 	public void setEmployementType(String employementType) {
-		this.employementType = employementType;
+		this.employmentType = employementType;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	@OneToOne(mappedBy = "Skills", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	public Skills getSkills() {
 		return skills;
 	}
 
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public void setSkills(Skills skills) {
 		this.skills = skills;
 	}
@@ -126,6 +188,8 @@ public class Job implements Serializable {
 		this.equity = equity;
 	}
 	
-	
-	
+	public static ArrayList<Job> getJobs() {
+		return jobs;
+	}
+
 }
